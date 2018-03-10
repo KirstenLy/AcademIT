@@ -18,6 +18,10 @@ public class Main {
         ArrayList<Shape> shapeList = new ArrayList<>();
 
         try {
+            /*
+             shapeList.add(new Square(-5));
+             уронит программу, если будет стоять первой. Такая же проблема, если делать не список а массивы.
+             */
             shapeList.add(new Square(5));
             shapeList.add(new Square(10));
             shapeList.add(new Square(15));
