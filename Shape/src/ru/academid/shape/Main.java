@@ -18,7 +18,6 @@ public class Main {
         ArrayList<Shape> shapeList = new ArrayList<>();
 
         try {
-            //shapeList.add(new Square(-5)); Роняет программу
             shapeList.add(new Square(5));
             shapeList.add(new Square(10));
             shapeList.add(new Square(15));
