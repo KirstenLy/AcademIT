@@ -110,20 +110,14 @@ public class Vector {
     }
 
     public static Vector vectorsSum(Vector vector1, Vector vector2) {
-        boolean isVector1 = vector1.components.length >= vector2.components.length;
-
-        Vector resultVector = new Vector(isVector1 ? vector1 : vector2);
-        resultVector.sum(isVector1 ? vector2 : vector1);
-
+        Vector resultVector = new Vector(vector1);
+        resultVector.sum(vector2);
         return resultVector;
     }
 
     public static Vector vectorsDifference(Vector vector1, Vector vector2) {
-        boolean isVector1 = vector1.components.length >= vector2.components.length;
-
-        Vector resultVector = new Vector(isVector1 ? vector1 : vector2);
-        resultVector.difference(isVector1 ? vector2 : vector1);
-
+        Vector resultVector = new Vector(vector1);
+        resultVector.difference(vector2);
         return resultVector;
     }
 
