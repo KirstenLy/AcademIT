@@ -5,7 +5,7 @@ public class Main {
 
         Vector vector1 = new Vector(5);
         Vector vector2 = new Vector(new double[]{3, 9.3, 44});
-        Vector vector3 = new Vector(3, new double[]{7, 5, 2.3});
+        Vector vector3 = new Vector(1, new double[]{7, 5, 2.3});
         Vector vector4 = new Vector(vector3);
 
         System.out.println("Инициализация:");
