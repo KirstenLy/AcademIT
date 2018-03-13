@@ -43,7 +43,7 @@ public class Main {
 
         Vector vector7 = Vector.vectorsSum(vector5, vector6);
         Vector vector8 = Vector.vectorsDifference(vector5, vector6);
-        double scalarDifference = Vector.vectorsScalarDifference(vector5, vector6);
+        double scalarDifference = Vector.vectorsScalarMultiplication(vector5, vector6);
 
         System.out.println("Сумма: " + vector5.toString() + " + " + vector6.toString() + " = " + vector7.toString());
         System.out.println("Разность: " + vector5.toString() + " - " + vector6.toString() + " = " + vector8.toString());

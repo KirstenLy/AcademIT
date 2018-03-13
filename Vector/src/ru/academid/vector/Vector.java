@@ -20,7 +20,7 @@ public class Vector {
             throw new IllegalArgumentException();
         }
         this.size = vectorArray.length;
-        this.vectorComponents = vectorArray;
+        this.vectorComponents = Arrays.copyOf(vectorArray, vectorArray.length);
     }
 
     public Vector(int size, double[] vectorComponents) {
@@ -43,8 +43,8 @@ public class Vector {
     }
 
     public Vector(Vector vectorFromCopy) {
-        this.size = vectorFromCopy.size;
-        this.vectorComponents = Arrays.copyOf(vectorFromCopy.vectorComponents, vectorFromCopy.vectorComponents.length);
+        this.size = vectorFromCopy.getSize();
+        this.vectorComponents = Arrays.copyOf(vectorFromCopy.getVectorComponents(), vectorFromCopy.getSize());
     }
 
     public int getSize() {
@@ -56,6 +56,10 @@ public class Vector {
             throw new IllegalArgumentException();
         }
         return vectorComponents[number];
+    }
+
+    public double[] getVectorComponents() {
+        return vectorComponents;
     }
 
     public void setVectorComponent(int number, double value) {
@@ -93,9 +97,7 @@ public class Vector {
     }
 
     public void spin() {
-        for (int i = 0; i < this.getSize(); i++) {
-            this.multiplication(-1);
-        }
+        this.multiplication(-1);
     }
 
     public double length() {
@@ -124,7 +126,7 @@ public class Vector {
         return resultVector;
     }
 
-    public static double vectorsScalarDifference(Vector vector1, Vector vector2) {
+    public static double vectorsScalarMultiplication(Vector vector1, Vector vector2) {
         double resultDifference = 0;
 
         boolean isVector1 = vector1.getSize() >= vector2.getSize();
