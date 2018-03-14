@@ -55,7 +55,7 @@ public class Vector {
     public void sum(Vector vector) {
         if (components.length >= vector.components.length) {
             for (int i = 0; i < vector.components.length; i++) {
-                setVectorComponent(i, getVectorComponent(i) + vector.getVectorComponent(i));
+                components[i] += vector.getVectorComponent(i);
             }
         } else {
             double[] sumComponents = new double[vector.components.length];
@@ -66,7 +66,6 @@ public class Vector {
             for (int i = 0; i < components.length; i++) {
                 sumComponents[i] = components[i] + vector.getVectorComponent(i);
             }
-
             components = Arrays.copyOf(sumComponents, sumComponents.length);
         }
     }
@@ -74,7 +73,7 @@ public class Vector {
     public void difference(Vector vector) {
         if (components.length >= vector.components.length) {
             for (int i = 0; i < vector.components.length; i++) {
-                setVectorComponent(i, getVectorComponent(i) - vector.getVectorComponent(i));
+                components[i] -= vector.getVectorComponent(i);
             }
         } else {
             double[] sumComponents = new double[vector.components.length];
@@ -85,7 +84,6 @@ public class Vector {
             for (int i = 0; i < components.length; i++) {
                 sumComponents[i] = components[i] - vector.getVectorComponent(i);
             }
-
             components = Arrays.copyOf(sumComponents, sumComponents.length);
         }
     }
@@ -99,7 +97,7 @@ public class Vector {
             throw new IllegalArgumentException("Множитель равен нулю.");
         }
         for (int i = 0; i < components.length; i++) {
-            setVectorComponent(i, getVectorComponent(i) * n);
+            components[i] *= n;
         }
     }
 
@@ -110,7 +108,7 @@ public class Vector {
     public double length() {
         double sum = 0;
         for (int i = 0; i < components.length; i++) {
-            sum += Math.pow(getVectorComponent(i), 2);
+            sum += Math.pow(components[i], 2);
         }
         return Math.sqrt(sum);
     }
