@@ -2,57 +2,52 @@ package ru.academid.vector;
 
 import java.util.Arrays;
 
+//1 2 3
+
 public class Vector {
     private double[] components;
 
     public Vector(int size) {
         if (size <= 0) {
-            System.out.println("Некорректное значение size: " + size);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Некорректное значение size: " + size);
         }
         components = new double[size];
     }
 
     public Vector(double[] vectorArray) {
         if (vectorArray.length == 0) {
-            System.out.println("Передан пустой массив.");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Передан пустой массив.");
         }
         components = Arrays.copyOf(vectorArray, vectorArray.length);
     }
 
     public Vector(int size, double[] vectorComponents) {
         if (size <= 0) {
-            System.out.println("Некорректное значение size: " + size);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Некорректное значение size: " + size);
         }
         if (vectorComponents.length == 0) {
-            System.out.println("Передан пустой массив.");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Передан пустой массив.");
         }
         components = Arrays.copyOf(vectorComponents, size);
     }
 
     public Vector(Vector vectorFromCopy) {
         if (vectorFromCopy == null) {
-            System.out.println("Передан пустой вектор.");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Передан пустой вектор.");
         }
         components = Arrays.copyOf(vectorFromCopy.components, vectorFromCopy.components.length);
     }
 
     public double getVectorComponent(int number) {
         if (number < 0 || number >= components.length) {
-            System.out.println("Компоненты с номером " + number + " не существует у вектора: " + toString());
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Компоненты с номером " + number + " не существует у вектора: " + toString());
         }
         return components[number];
     }
 
     public void setVectorComponent(int number, double value) {
         if (number < 0 || number >= components.length) {
-            System.out.println("Компоненты с номером " + number + " не существует у вектора: " + toString());
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Компоненты с номером " + number + " не существует у вектора: " + toString());
         }
         components[number] = value;
     }
@@ -63,10 +58,16 @@ public class Vector {
                 setVectorComponent(i, getVectorComponent(i) + vector.getVectorComponent(i));
             }
         } else {
+            double[] sumComponents = new double[vector.components.length];
+
+            System.arraycopy(components, 0, sumComponents, 0, components.length);
+            System.arraycopy(vector.components, components.length, sumComponents, components.length, vector.components.length - components.length);
+
             for (int i = 0; i < components.length; i++) {
-                vector.setVectorComponent(i, vector.getVectorComponent(i) + getVectorComponent(i));
+                sumComponents[i] = components[i] + vector.getVectorComponent(i);
             }
-            components = Arrays.copyOf(vector.components, vector.components.length);
+
+            components = Arrays.copyOf(sumComponents, sumComponents.length);
         }
     }
 
@@ -76,10 +77,16 @@ public class Vector {
                 setVectorComponent(i, getVectorComponent(i) - vector.getVectorComponent(i));
             }
         } else {
+            double[] sumComponents = new double[vector.components.length];
+
+            System.arraycopy(components, 0, sumComponents, 0, components.length);
+            System.arraycopy(vector.components, components.length, sumComponents, components.length, vector.components.length - components.length);
+
             for (int i = 0; i < components.length; i++) {
-                vector.setVectorComponent(i, vector.getVectorComponent(i) - getVectorComponent(i));
+                sumComponents[i] = components[i] - vector.getVectorComponent(i);
             }
-            components = Arrays.copyOf(vector.components, vector.components.length);
+
+            components = Arrays.copyOf(sumComponents, sumComponents.length);
         }
     }
 
@@ -89,8 +96,7 @@ public class Vector {
 
     public void multiplication(double n) {
         if (n == 0) {
-            System.out.println("Множитель равен нулю.");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Множитель равен нулю.");
         }
         for (int i = 0; i < components.length; i++) {
             setVectorComponent(i, getVectorComponent(i) * n);
@@ -134,14 +140,20 @@ public class Vector {
 
     @Override
     public String toString() {
-        StringBuilder resultString = new StringBuilder();
-
-        for (int i = 0; i < components.length; i++) {
-            resultString.append(String.format(" %.1f ", getVectorComponent(i))).append(i == components.length - 1 ? "" : ";");
-        }
-
-        return "{" + resultString + "}";
+        return Arrays.toString(components);
     }
+
+    /* @Override
+        public String toString() {
+            StringBuilder resultString = new StringBuilder();
+
+            for (int i = 0; i < components.length; i++) {
+                resultString.append(String.format(" %.1f ", getVectorComponent(i))).append(i == components.length - 1 ? "" : ",");
+            }
+
+            return "{" + resultString + "}";
+        }
+    */
 
     @Override
     public boolean equals(Object o) {

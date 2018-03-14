@@ -37,7 +37,6 @@ public class Main {
         System.out.printf("Длинна: %s = %.1f%n%n", vector3.toString(), vector3.length());
 
         System.out.println("Cтатические методы:");
-
         Vector vector5 = new Vector(new double[]{5, 10, 15});
         Vector vector6 = new Vector(new double[]{20, 25, 30});
 
@@ -51,5 +50,6 @@ public class Main {
 
         Vector vector9 = new Vector(new double[]{5, 10, 15});
         System.out.println("Equals: " + vector5.toString() + "  " + vector9.toString() + " = " + vector5.equals(vector9));
+
     }
 }
