@@ -1,8 +1,9 @@
-package ru.academid.vector;
+package ru.academit.vector.vector;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
-//1 2 3
+//3
 
 public class Vector {
     private double[] components;
@@ -58,15 +59,11 @@ public class Vector {
                 components[i] += vector.getVectorComponent(i);
             }
         } else {
-            double[] sumComponents = new double[vector.components.length];
-
-            System.arraycopy(components, 0, sumComponents, 0, components.length);
-            System.arraycopy(vector.components, components.length, sumComponents, components.length, vector.components.length - components.length);
-
+            double[] resultComponents = Arrays.copyOf(vector.components, vector.components.length);
             for (int i = 0; i < components.length; i++) {
-                sumComponents[i] = components[i] + vector.getVectorComponent(i);
+                resultComponents[i] = components[i] + vector.getVectorComponent(i);
             }
-            components = Arrays.copyOf(sumComponents, sumComponents.length);
+            components = resultComponents;
         }
     }
 
@@ -76,15 +73,11 @@ public class Vector {
                 components[i] -= vector.getVectorComponent(i);
             }
         } else {
-            double[] sumComponents = new double[vector.components.length];
-
-            System.arraycopy(components, 0, sumComponents, 0, components.length);
-            System.arraycopy(vector.components, components.length, sumComponents, components.length, vector.components.length - components.length);
-
+            double[] resultComponents = Arrays.copyOf(vector.components, vector.components.length);
             for (int i = 0; i < components.length; i++) {
-                sumComponents[i] = components[i] - vector.getVectorComponent(i);
+                resultComponents[i] = components[i] - vector.getVectorComponent(i);
             }
-            components = Arrays.copyOf(sumComponents, sumComponents.length);
+            components = resultComponents;
         }
     }
 
@@ -93,9 +86,6 @@ public class Vector {
     }
 
     public void multiplication(double n) {
-        if (n == 0) {
-            throw new IllegalArgumentException("Множитель равен нулю.");
-        }
         for (int i = 0; i < components.length; i++) {
             components[i] *= n;
         }
@@ -107,8 +97,8 @@ public class Vector {
 
     public double length() {
         double sum = 0;
-        for (int i = 0; i < components.length; i++) {
-            sum += Math.pow(components[i], 2);
+        for (double component : components) {
+            sum += Math.pow(component, 2);
         }
         return Math.sqrt(sum);
     }
@@ -138,20 +128,16 @@ public class Vector {
 
     @Override
     public String toString() {
-        return Arrays.toString(components);
+        StringBuilder resultString = new StringBuilder();
+        resultString.append("{");
+
+        for (int i = 0; i < components.length; i++) {
+            resultString.append(String.format(" %.1f ", getVectorComponent(i))).append(i == components.length - 1 ? "" : ",");
+        }
+        resultString.append("}");
+        return String.valueOf(resultString);
     }
 
-    /* @Override
-        public String toString() {
-            StringBuilder resultString = new StringBuilder();
-
-            for (int i = 0; i < components.length; i++) {
-                resultString.append(String.format(" %.1f ", getVectorComponent(i))).append(i == components.length - 1 ? "" : ",");
-            }
-
-            return "{" + resultString + "}";
-        }
-    */
 
     @Override
     public boolean equals(Object o) {

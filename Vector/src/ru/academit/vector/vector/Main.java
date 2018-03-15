@@ -1,4 +1,4 @@
-package ru.academid.vector;
+package ru.academit.vector.vector;
 
 public class Main {
     public static void main(String[] args) {
@@ -50,6 +50,5 @@ public class Main {
 
         Vector vector9 = new Vector(new double[]{5, 10, 15});
         System.out.println("Equals: " + vector5.toString() + "  " + vector9.toString() + " = " + vector5.equals(vector9));
-
     }
 }
