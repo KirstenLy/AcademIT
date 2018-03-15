@@ -1,8 +1,6 @@
 package ru.academit.shape.ru.academit.shape.main;
 
 import ru.academit.shape.*;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
