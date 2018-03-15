@@ -1,4 +1,4 @@
-package ru.academid.shape;
+package ru.academit.shape;
 
 import java.util.Objects;
 
@@ -6,8 +6,8 @@ public class Circle implements Shape {
     private double radius;
 
     public Circle(double radius) {
-        if (radius < 0) {
-            throw new IllegalArgumentException();
+        if (radius <= 0) {
+            throw new IllegalArgumentException("Некорректное значение радиуса: " + radius);
         }
         this.radius = radius;
     }
@@ -51,7 +51,6 @@ public class Circle implements Shape {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(radius);
     }
 }

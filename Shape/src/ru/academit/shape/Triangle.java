@@ -1,4 +1,4 @@
-package ru.academid.shape;
+package ru.academit.shape;
 
 import java.util.Objects;
 
@@ -15,9 +15,8 @@ public class Triangle implements Shape {
 
     public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
         if ((x3 - x1) / (x2 - x1) == (y3 - y1) / (y2 - y1) || ((x1 == x2 && y1 == y2) || (x2 == x3 && y2 == y3) || (x3 == x1 && y3 == y1))) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Некорректные значения координат: две или три точки лежат на одной прямой.");
         }
-
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;

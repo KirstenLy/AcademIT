@@ -1,4 +1,4 @@
-package ru.academid.shape;
+package ru.academit.shape;
 
 public interface Shape {
     double getHeight();
