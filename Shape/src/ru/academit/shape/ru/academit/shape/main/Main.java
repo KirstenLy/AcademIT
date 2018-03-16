@@ -1,6 +1,7 @@
 package ru.academit.shape.ru.academit.shape.main;
 
 import ru.academit.shape.*;
+
 import java.util.Arrays;
 
 public class Main {
@@ -8,13 +9,13 @@ public class Main {
     public static Shape getShapeAccordingArea(Shape[] shapeArray) {
         Shape[] sortShapes = Arrays.copyOf(shapeArray, shapeArray.length);
         Arrays.sort(sortShapes, Comparators.AreaComparator);
-        return sortShapes[0];
+        return sortShapes[shapeArray.length - 1];
     }
 
     public static Shape getShapeAccordingPerimeter(Shape[] shapeArray) {
         Shape[] sortShapes = Arrays.copyOf(shapeArray, shapeArray.length);
         Arrays.sort(sortShapes, Comparators.PerimeterComparator);
-        return sortShapes[1];
+        return sortShapes[shapeArray.length - 2];
     }
 
     public static void main(String[] args) {
