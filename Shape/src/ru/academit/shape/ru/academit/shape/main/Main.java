@@ -8,13 +8,13 @@ public class Main {
 
     public static Shape getShapeAccordingArea(Shape[] shapeArray) {
         Shape[] sortShapes = Arrays.copyOf(shapeArray, shapeArray.length);
-        Arrays.sort(sortShapes, Comparators.AreaComparator);
+        Arrays.sort(sortShapes, new AreaComparator());
         return sortShapes[shapeArray.length - 1];
     }
 
     public static Shape getShapeAccordingPerimeter(Shape[] shapeArray) {
         Shape[] sortShapes = Arrays.copyOf(shapeArray, shapeArray.length);
-        Arrays.sort(sortShapes, Comparators.PerimeterComparator);
+        Arrays.sort(sortShapes, new PerimeterComparator());
         return sortShapes[shapeArray.length - 2];
     }
 
