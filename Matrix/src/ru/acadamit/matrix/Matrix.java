@@ -23,7 +23,7 @@ public class Matrix {
     public Matrix(Matrix matrix) {
         matrixElements = new Vector[matrix.matrixElements.length];
         for (int i = 0; i < matrix.matrixElements.length; i++) {
-            matrixElements[i] = new Vector(matrix.getVector(i));
+            matrixElements[i] = new Vector(matrix.getRow(i));
         }
     }
 
@@ -36,6 +36,9 @@ public class Matrix {
 
         for (double[] vector : doubleArray) {
             vectorsLength = Math.max(vectorsLength, vector.length);
+            if (vector.length == 0) {
+                throw new IllegalArgumentException("В массиве имеется строка нулевой длинны.");
+            }
         }
 
         if (vectorsLength == 0) {
@@ -68,21 +71,21 @@ public class Matrix {
         return matrixElements[0].getSize();
     }
 
-    public Vector getVector(int n) {
+    public Vector getRow(int n) {
         if (n < 0 || n >= matrixElements.length) {
             throw new IndexOutOfBoundsException("Вектора с номером: " + n + " не существует.");
         }
         return new Vector(matrixElements[n]);
     }
 
-    public void setVector(int n, Vector vector) {
+    public void setRow(int n, Vector vector) {
         if (n < 0 || n >= matrixElements.length) {
             throw new IndexOutOfBoundsException("Вектора с номером: " + n + " не существует.");
         }
         matrixElements[n] = new Vector(vector);
     }
 
-    private Vector getVectorFromRow(int n) {
+    public Vector getColumn(int n) {
         if (n < 0 || n >= matrixElements[0].getSize()) {
             throw new IndexOutOfBoundsException("Вектора с номером: " + n + " не существует.");
         }
@@ -98,7 +101,7 @@ public class Matrix {
         Vector[] tempVectors = new Vector[this.getWight()];
 
         for (int i = 0; i < matrixElements[0].getSize(); i++) {
-            tempVectors[i] = new Vector(getVectorFromRow(i));
+            tempVectors[i] = new Vector(getColumn(i));
         }
         matrixElements = tempVectors;
     }
@@ -160,7 +163,7 @@ public class Matrix {
             throw new IllegalArgumentException("Размерности матриц не равны.");
         }
         for (int i = 0; i < matrixElements.length; i++) {
-            matrixElements[i].sum(matrix.getVector(i));
+            matrixElements[i].sum(matrix.getRow(i));
         }
     }
 
@@ -169,7 +172,7 @@ public class Matrix {
             throw new IllegalArgumentException("Размерности матриц не равны.");
         }
         for (int i = 0; i < matrixElements.length; i++) {
-            matrixElements[i].difference(matrix.getVector(i));
+            matrixElements[i].difference(matrix.getRow(i));
         }
     }
 
@@ -206,9 +209,9 @@ public class Matrix {
         Vector tempVector2;
 
         for (int i = 0; i < resultMatrix.matrixElements.length; i++) {
-            tempVector1 = matrix1.getVector(i);
+            tempVector1 = matrix1.getRow(i);
             for (int j = 0; j < resultMatrix.getWight(); j++) {
-                tempVector2 = matrix2.getVectorFromRow(j);
+                tempVector2 = matrix2.getColumn(j);
                 for (int k = 0; k < resultMatrix.getWight(); k++) {
                     temp += tempVector1.getVectorComponent(k) * tempVector2.getVectorComponent(k);
                 }
