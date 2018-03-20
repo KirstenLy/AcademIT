@@ -1,4 +1,4 @@
-package ru.academit.shape.ru.academit.shape.main;
+package ru.academit.shape.main;
 
 import ru.academit.shape.*;
 

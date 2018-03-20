@@ -2,17 +2,19 @@ package ru.acadamit.matrix;
 
 import ru.academit.vector.Vector;
 
-import java.util.Arrays;
-
 public class Matrix {
     private Vector[] matrixArray;
 
     public Matrix(int n, int m) {
-        if (n <= 0 || m <= 0) {
-            throw new IllegalArgumentException("Некорректные значения n или m: " + n + ";" + m);
+        if (n <= 0) {
+            throw new IllegalArgumentException("Некорректное значение n: " + n);
+        }
+        if (m <= 0) {
+            throw new IllegalArgumentException("Некорректное значение m: " + m);
         }
 
         matrixArray = new Vector[n];
+
         for (int i = 0; i < n; i++) {
             matrixArray[i] = new Vector(m);
         }
@@ -20,9 +22,14 @@ public class Matrix {
 
     public Matrix(Matrix matrix) {
         if (matrix == null) {
-            throw new IllegalArgumentException("Передана пустая ссылка");
+            throw new NullPointerException("Передан null.");
         }
-        matrixArray = Arrays.copyOf(matrix.matrixArray, matrix.matrixArray.length);
+
+        matrixArray = new Vector[matrix.matrixArray.length];
+
+        for (int i = 0; i < matrix.matrixArray.length; i++) {
+            matrixArray[i] = new Vector(matrix.getVector(i));
+        }
     }
 
     public Matrix(double[][] doubleArray) {
@@ -30,32 +37,40 @@ public class Matrix {
             throw new IndexOutOfBoundsException("Передан пустой массив.");
         }
 
-        matrixArray = new Vector[doubleArray.length];
-        int maxVectorLength = doubleArray[0].length;
+        int vectorsLength = 0;
+        int emptyVectorsCounter = 0;
+        int corrector = 0;
 
-        for (int i = 1; i < doubleArray.length; i++) {
-            maxVectorLength = Math.max(maxVectorLength, doubleArray[i].length);
+        for (double[] aDoubleArray : doubleArray) {
+            vectorsLength = Math.max(vectorsLength, aDoubleArray.length);
+            if (aDoubleArray.length == 0) {
+                emptyVectorsCounter++;
+            }
         }
 
-        for (int i = 0; i < doubleArray.length; i++) {
-            if (doubleArray[i].length < maxVectorLength) {
-                double[] temp = new double[maxVectorLength];
-                System.arraycopy(doubleArray[i], 0, temp, 0, doubleArray[i].length);
-                for (int j = doubleArray[i].length; j < maxVectorLength; j++) {
-                    temp[j] = 0;
-                }
-                matrixArray[i] = new Vector(temp);
-            } else {
-                matrixArray[i] = new Vector(doubleArray[i]);
+        matrixArray = new Vector[doubleArray.length - emptyVectorsCounter];
+
+        for (int i = 0; i < doubleArray.length;i++){
+            if (doubleArray[i].length == 0) {
+                corrector++;
+                continue;
             }
+            matrixArray[i - corrector] = new Vector(vectorsLength,doubleArray[i]);
         }
     }
 
     public Matrix(Vector[] vectors) {
+        if (vectors == null) {
+            throw new NullPointerException("Передан null.");
+        }
         if (vectors.length == 0) {
             throw new IndexOutOfBoundsException("Передан пустой массив.");
         }
-        matrixArray = vectors;
+        Vector[] tempArray = new Vector[vectors.length];
+        for (int i = 0; i < tempArray.length; i++) {
+            tempArray[i] = new Vector(vectors[i]);
+        }
+        matrixArray = tempArray;
     }
 
     public String getSize() {
@@ -63,25 +78,23 @@ public class Matrix {
     }
 
     public Vector getVector(int n) {
-        if (n <= 0 || n >= matrixArray.length) {
+        if (n < 0 || n >= matrixArray.length) {
             throw new IndexOutOfBoundsException("Вектора с номером: " + n + " не существует.");
         }
         return matrixArray[n];
     }
 
     public void setVector(int n, Vector vector) {
-        if (n <= 0 || n >= matrixArray.length) {
+        if (n < 0 || n >= matrixArray.length) {
             throw new IndexOutOfBoundsException("Вектора с номером: " + n + " не существует.");
         }
-        matrixArray[n] = vector;
+        matrixArray[n] = new Vector(vector);
     }
 
     public void transpose() {
         Matrix tempMatrix = new Matrix(matrixArray[0].getSize(), matrixArray.length);
         for (int i = 0; i < matrixArray[0].getSize(); i++) {
-            for (int j = 0; j < matrixArray.length; j++) {
-                tempMatrix.matrixArray[i].setVectorComponent(j, matrixArray[j].getVectorComponent(i));
-            }
+            tempMatrix.matrixArray[i] = new Vector(getVectorFromRow(i));
         }
         matrixArray = tempMatrix.matrixArray;
     }
@@ -92,13 +105,7 @@ public class Matrix {
         }
     }
 
-    private void swapTwoStringsInMatrix(Vector[] matrixArray, int firstRow, int secondRow) {
-        Vector temp = matrixArray[firstRow];
-        matrixArray[firstRow] = matrixArray[secondRow];
-        matrixArray[secondRow] = temp;
-    }
-
-    //взято с предыдущей сданной задачи и переделано
+    //взято с предыдущей сданной задачи и подкорректировано
     public double determination() {
         if (matrixArray.length != matrixArray[0].getSize()) {
             throw new IllegalArgumentException("Только для квадратных матриц. Текущий размер матрицы:" + this.getSize());
@@ -145,6 +152,9 @@ public class Matrix {
     }
 
     public void sum(Matrix matrix) {
+        if (matrix == null) {
+            throw new NullPointerException("Передан null.");
+        }
         for (int i = 0; i < matrixArray.length; i++) {
             for (int j = 0; j < matrixArray[0].getSize(); j++) {
                 matrixArray[i].setVectorComponent(j, matrixArray[i].getVectorComponent(j) + matrix.matrixArray[i].getVectorComponent(j));
@@ -153,6 +163,9 @@ public class Matrix {
     }
 
     public void difference(Matrix matrix) {
+        if (matrix == null) {
+            throw new NullPointerException("Передан null.");
+        }
         for (int i = 0; i < matrixArray.length; i++) {
             for (int j = 0; j < matrixArray[0].getSize(); j++) {
                 matrixArray[i].setVectorComponent(j, matrixArray[i].getVectorComponent(j) - matrix.matrixArray[i].getVectorComponent(j));
@@ -160,34 +173,100 @@ public class Matrix {
         }
     }
 
-    public static Matrix MatrixSum(Matrix matrix1,Matrix matrix2){
-        if (matrix1.matrixArray.length != matrix2.matrixArray.length || matrix1.matrixArray[0].getSize() != matrix2.matrixArray[0].getSize()){
-            throw new IllegalArgumentException("Матрицы не равны по размеру.");
+    public static Matrix MatrixSum(Matrix matrix1, Matrix matrix2) {
+        if (matrix1 == null || matrix2 == null) {
+            throw new NullPointerException("Передан null.");
+        }
+        if (matrix1.matrixArray.length != matrix2.matrixArray.length ||
+                matrix1.matrixArray[0].getSize() != matrix2.matrixArray[0].getSize()) {
+            throw new IllegalArgumentException("Размерности матриц не равны: " + matrix1.getSize() + "," + matrix2.getSize());
         }
 
-        Matrix resultMatrix = new Matrix(matrix1.matrixArray.length,matrix1.matrixArray[0].getSize());
+        Matrix resultMatrix = new Matrix(matrix1.matrixArray.length, matrix1.matrixArray[0].getSize());
 
-        for (int i = 0; i < matrix1.matrixArray.length;i++){
-            Vector tempVector = new Vector(matrix1.matrixArray[i]);
-            tempVector.sum(matrix2.matrixArray[i]);
-            resultMatrix.matrixArray[i] = new Vector(tempVector);
+        for (int i = 0; i < matrix1.matrixArray.length; i++) {
+            resultMatrix.matrixArray[i] = new Vector(matrix1.getVector(i));
+            resultMatrix.matrixArray[i].sum(matrix2.getVector(i));
         }
         return resultMatrix;
     }
 
-    public static Matrix MatrixDiss(Matrix matrix1,Matrix matrix2){
-        if (matrix1.matrixArray.length != matrix2.matrixArray.length || matrix1.matrixArray[0].getSize() != matrix2.matrixArray[0].getSize()){
-            throw new IllegalArgumentException("Матрицы не равны по размеру.");
+    public static Matrix MatrixDifference(Matrix matrix1, Matrix matrix2) {
+        if (matrix1 == null || matrix2 == null) {
+            throw new NullPointerException("Передан null.");
+        }
+        if (matrix1.matrixArray.length != matrix2.matrixArray.length ||
+                matrix1.matrixArray[0].getSize() != matrix2.matrixArray[0].getSize()) {
+            throw new IllegalArgumentException("Размерности матриц не равны: " + matrix1.getSize() + "," + matrix2.getSize());
         }
 
-        Matrix resultMatrix = new Matrix(matrix1.matrixArray.length,matrix1.matrixArray[0].getSize());
+        Matrix resultMatrix = new Matrix(matrix1.matrixArray.length, matrix1.matrixArray[0].getSize());
 
-        for (int i = 0; i < matrix1.matrixArray.length;i++){
-            Vector tempVector = new Vector(matrix1.matrixArray[i]);
-            tempVector.difference(matrix2.matrixArray[i]);
-            resultMatrix.matrixArray[i] = new Vector(tempVector);
+        for (int i = 0; i < matrix1.matrixArray.length; i++) {
+            resultMatrix.matrixArray[i] = new Vector(matrix1.getVector(i));
+            resultMatrix.matrixArray[i].difference(matrix2.getVector(i));
         }
         return resultMatrix;
+    }
+
+    public static Matrix MatrixDetermination(Matrix matrix1, Matrix matrix2) {
+        if (matrix1 == null || matrix2 == null) {
+            throw new NullPointerException("Передан null.");
+        }
+        if (matrix1.matrixArray.length != matrix2.matrixArray[0].getSize()) {
+            throw new IndexOutOfBoundsException("Число столбцов первого сомножителя не равно числу строк второго сомножителя.");
+        }
+
+        Matrix resultMatrix = new Matrix(matrix1.matrixArray.length, matrix1.matrixArray[0].getSize());
+
+        double temp = 0;
+        Vector tempVector1;
+        Vector tempVector2;
+
+        for (int i = 0; i < resultMatrix.matrixArray.length; i++) {
+            tempVector1 = matrix1.getVector(i);
+            for (int j = 0; j < resultMatrix.matrixArray[0].getSize(); j++) {
+                tempVector2 = matrix2.getVectorFromRow(j);
+                for (int k = 0; k < resultMatrix.matrixArray[0].getSize(); k++) {
+                    temp += tempVector1.getVectorComponent(k) * tempVector2.getVectorComponent(k);
+                }
+                resultMatrix.matrixArray[i].setVectorComponent(j, temp);
+                temp = 0;
+            }
+        }
+        return resultMatrix;
+    }
+
+    public static Vector MatrixDeterminationOnVector(Matrix matrix, Vector vector) {
+        if (matrix == null || vector == null) {
+            throw new NullPointerException("Передан null");
+        }
+        Vector tempVector = new Vector(matrix.getVector(0).getSize());
+
+        for (int i = 0; i < matrix.getVectorFromRow(0).getSize(); i++) {
+            for (int j = 0; j < matrix.getVector(0).getSize(); j++) {
+                tempVector.setVectorComponent(i, tempVector.getVectorComponent(i) + matrix.matrixArray[i].getVectorComponent(j) * vector.getVectorComponent(j));
+            }
+        }
+        return tempVector;
+    }
+
+    private Vector getVectorFromRow(int n) {
+        if (n < 0 || n >= matrixArray[0].getSize()) {
+            throw new IndexOutOfBoundsException("Вектора с номером: " + n + " не существует.");
+        }
+        double[] temp = new double[matrixArray.length];
+
+        for (int i = 0; i < matrixArray.length; i++) {
+            temp[i] = matrixArray[i].getVectorComponent(n);
+        }
+        return new Vector(temp);
+    }
+
+    private void swapTwoStringsInMatrix(Vector[] matrixArray, int firstRow, int secondRow) {
+        Vector temp = matrixArray[firstRow];
+        matrixArray[firstRow] = matrixArray[secondRow];
+        matrixArray[secondRow] = temp;
     }
 
     @Override

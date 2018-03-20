@@ -1,4 +1,6 @@
-package ru.academit.vector.vector;
+package ru.academit.vector.main;
+
+import ru.academit.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {

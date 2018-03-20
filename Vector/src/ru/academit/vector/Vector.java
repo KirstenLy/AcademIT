@@ -1,9 +1,6 @@
-package ru.academit.vector.vector;
+package ru.academit.vector;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-
-//3
 
 public class Vector {
     private double[] components;
@@ -137,7 +134,6 @@ public class Vector {
         resultString.append("}");
         return String.valueOf(resultString);
     }
-
 
     @Override
     public boolean equals(Object o) {
