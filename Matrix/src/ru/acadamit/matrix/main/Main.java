@@ -16,11 +16,11 @@ public class Main {
                 new Vector(new double[]{3, 6, 9}),
                 new Vector(3)
         });
-        System.out.println("Матрица нулей размером " + matrix1.getSize() + ": " + matrix1);
+        System.out.println("Матрица нулей размером " + matrix1.getHeight() + "x" + matrix1.getWight() + ": " + matrix1);
 
         System.out.println("Матрица из double массива: " + matrix2);
         System.out.println("Её копия: " + matrix3);
-        System.out.println("Её размер: " + matrix2.getSize());
+        System.out.println("Её размер: " + matrix2.getHeight() + "x" + matrix2.getWight());
         System.out.println("Её второй вектор: " + matrix2.getVector(1));
 
         System.out.print("Смена этого вектора на {4,4,4}: ");
@@ -43,7 +43,7 @@ public class Main {
                 {7, 8, 9}
         });
         System.out.println("matrix5: " + matrix5);
-        System.out.println("matrix5.determination: " + matrix5.determination());
+        System.out.println("matrix5.determination: " + matrix5.determinant());
         matrix5.transpose();
         System.out.println("matrix5.transpose: " + matrix5);
         System.out.println();
@@ -82,9 +82,9 @@ public class Main {
         System.out.println("matrix8: " + matrix8);
         System.out.println("matrix9: " + matrix9);
 
-        Matrix matrix10 = Matrix.MatrixSum(matrix8, matrix9);
-        Matrix matrix11 = Matrix.MatrixDifference(matrix8, matrix9);
-        Matrix matrix12 = Matrix.MatrixDetermination(matrix8, matrix9);
+        Matrix matrix10 = Matrix.matrixSum(matrix8, matrix9);
+        Matrix matrix11 = Matrix.matrixDifference(matrix8, matrix9);
+        Matrix matrix12 = Matrix.matrixMultiplication(matrix8, matrix9);
         System.out.println("matrix8 + matrix9: " + matrix10);
         System.out.println("matrix8 - matrix9: " + matrix11);
         System.out.println("matrix8 * matrix9: " + matrix12);
@@ -93,6 +93,6 @@ public class Main {
                 {10, 10, 10}
         );
         System.out.println("vector11: " + vector11);
-        System.out.println("matrix9 * vector11: " + Matrix.MatrixDeterminationOnVector(matrix9, vector11));
+        System.out.println("matrix9 * vector11: " + Matrix.matrixMultiplicationOnVector(matrix9, vector11));
     }
 }
