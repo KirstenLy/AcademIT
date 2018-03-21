@@ -23,10 +23,14 @@ public class Vector {
         if (size <= 0) {
             throw new IllegalArgumentException("Некорректное значение size: " + size);
         }
-        if (vectorComponents.length == 0) {
-            throw new IllegalArgumentException("Передан пустой массив.");
-        }
         components = Arrays.copyOf(vectorComponents, size);
+    }
+
+    public Vector(int size, Vector vector) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Некорректное значение size: " + size);
+        }
+        components = Arrays.copyOf(vector.components, size);
     }
 
     public Vector(Vector vectorFromCopy) {

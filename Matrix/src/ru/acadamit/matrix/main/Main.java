@@ -16,15 +16,16 @@ public class Main {
                 new Vector(new double[]{3, 6, 9}),
                 new Vector(3)
         });
-        System.out.println("Матрица нулей размером " + matrix1.getHeight() + "x" + matrix1.getWight() + ": " + matrix1);
+
+        System.out.println("Матрица нулей размером " + matrix1.getRowNumbers() + "x" + matrix1.getColumnNumbers() + ": " + matrix1);
 
         System.out.println("Матрица из double массива: " + matrix2);
         System.out.println("Её копия: " + matrix3);
-        System.out.println("Её размер: " + matrix2.getHeight() + "x" + matrix2.getWight());
-        System.out.println("Её второй вектор: " + matrix2.getVector(1));
+        System.out.println("Её размер: " + matrix2.getRowNumbers() + "x" + matrix2.getColumnNumbers());
+        System.out.println("Её второй вектор: " + matrix2.getRow(1));
 
         System.out.print("Смена этого вектора на {4,4,4}: ");
-        matrix2.setVector(1, new Vector(new double[]
+        matrix2.setRow(1, new Vector(new double[]
                 {4, 4, 4}
         ));
         System.out.println(matrix2);
