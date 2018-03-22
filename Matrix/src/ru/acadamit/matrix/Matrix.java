@@ -70,11 +70,11 @@ public class Matrix {
         matrixElements = tempArray;
     }
 
-    public int getRowNumbers() {
+    public int getRowsNumber() {
         return matrixElements.length;
     }
 
-    public int getColumnNumbers() {
+    public int getColumnsNumber() {
         return matrixElements[0].getSize();
     }
 
@@ -105,9 +105,9 @@ public class Matrix {
     }
 
     public void transpose() {
-        Vector[] tempVectors = new Vector[this.getColumnNumbers()];
+        Vector[] tempVectors = new Vector[this.getColumnsNumber()];
 
-        for (int i = 0; i < this.getColumnNumbers(); i++) {
+        for (int i = 0; i < this.getColumnsNumber(); i++) {
             tempVectors[i] = new Vector(getColumn(i));
         }
         matrixElements = tempVectors;
@@ -120,8 +120,8 @@ public class Matrix {
     }
 
     public double determinant() {
-        if (this.getRowNumbers() != this.getColumnNumbers()) {
-            throw new IllegalArgumentException("Только для квадратных матриц. Текущий размер матрицы:" + this.getRowNumbers() + "x" + this.getColumnNumbers());
+        if (this.getRowsNumber() != this.getColumnsNumber()) {
+            throw new IllegalArgumentException("Только для квадратных матриц. Текущий размер матрицы:" + this.getRowsNumber() + "x" + this.getColumnsNumber());
         }
 
         double epsilon = 1E-5;
@@ -165,27 +165,27 @@ public class Matrix {
     }
 
     public void sum(Matrix matrix) {
-        if (this.getColumnNumbers() != matrix.getColumnNumbers() || this.getRowNumbers() != matrix.getRowNumbers()) {
+        if (this.getColumnsNumber() != matrix.getColumnsNumber() || this.getRowsNumber() != matrix.getRowsNumber()) {
             throw new IllegalArgumentException("Размерности матриц не равны.");
         }
         for (int i = 0; i < matrixElements.length; i++) {
-            matrixElements[i].sum(matrix.getRow(i));
+            matrixElements[i].sum(matrix.matrixElements[i]);
         }
     }
 
     public void difference(Matrix matrix) {
-        if (this.getColumnNumbers() != matrix.getColumnNumbers() || this.getRowNumbers() != matrix.getRowNumbers()) {
+        if (this.getColumnsNumber() != matrix.getColumnsNumber() || this.getRowsNumber() != matrix.getRowsNumber()) {
             throw new IllegalArgumentException("Размерности матриц не равны.");
         }
         for (int i = 0; i < matrixElements.length; i++) {
-            matrixElements[i].difference(matrix.getRow(i));
+            matrixElements[i].difference(matrix.matrixElements[i]);
         }
     }
 
     public static Matrix matrixSum(Matrix matrix1, Matrix matrix2) {
         if (matrix1.matrixElements.length != matrix2.matrixElements.length ||
-                matrix1.getColumnNumbers() != matrix2.getColumnNumbers()) {
-            throw new IllegalArgumentException("Размерности матриц не равны: " + matrix1.getRowNumbers() + "x" + matrix1.getColumnNumbers() + "," + matrix2.getRowNumbers() + "x" + matrix2.getColumnNumbers());
+                matrix1.getColumnsNumber() != matrix2.getColumnsNumber()) {
+            throw new IllegalArgumentException("Размерности матриц не равны: " + matrix1.getRowsNumber() + "x" + matrix1.getColumnsNumber() + "," + matrix2.getRowsNumber() + "x" + matrix2.getColumnsNumber());
         }
         Matrix resultMatrix = new Matrix(matrix1);
         resultMatrix.sum(matrix2);
@@ -194,8 +194,8 @@ public class Matrix {
 
     public static Matrix matrixDifference(Matrix matrix1, Matrix matrix2) {
         if (matrix1.matrixElements.length != matrix2.matrixElements.length ||
-                matrix1.getColumnNumbers() != matrix2.getColumnNumbers()) {
-            throw new IllegalArgumentException("Размерности матриц не равны: " + matrix1.getRowNumbers() + "x" + matrix1.getColumnNumbers() + "," + matrix2.getRowNumbers() + "x" + matrix2.getColumnNumbers());
+                matrix1.getColumnsNumber() != matrix2.getColumnsNumber()) {
+            throw new IllegalArgumentException("Размерности матриц не равны: " + matrix1.getRowsNumber() + "x" + matrix1.getColumnsNumber() + "," + matrix2.getRowsNumber() + "x" + matrix2.getColumnsNumber());
         }
 
         Matrix resultMatrix = new Matrix(matrix1);
@@ -204,16 +204,16 @@ public class Matrix {
     }
 
     public static Matrix matrixMultiplication(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.getColumnNumbers() != matrix2.matrixElements.length) {
+        if (matrix1.getColumnsNumber() != matrix2.matrixElements.length) {
             throw new IllegalArgumentException("Число столбцов первого сомножителя не равно числу строк второго сомножителя.");
         }
 
-        Matrix resultMatrix = new Matrix(matrix1.matrixElements.length, matrix2.getColumnNumbers());
+        Matrix resultMatrix = new Matrix(matrix1.matrixElements.length, matrix2.getColumnsNumber());
 
         for (int i = 0; i < resultMatrix.matrixElements.length; i++) {
             Vector tempVector1 = matrix1.getRow(i);
 
-            for (int j = 0; j < resultMatrix.getColumnNumbers(); j++) {
+            for (int j = 0; j < resultMatrix.getColumnsNumber(); j++) {
                 Vector tempVector2 = matrix2.getColumn(j);
                 double temp = 0;
                 for (int k = 0; k < tempVector1.getSize(); k++) {
@@ -226,12 +226,12 @@ public class Matrix {
     }
 
     public static Vector matrixMultiplicationOnVector(Matrix matrix, Vector vector) {
-        if (matrix.getColumnNumbers() != vector.getSize()) {
+        if (matrix.getColumnsNumber() != vector.getSize()) {
             throw new IllegalArgumentException("Число столбцов в матрице не совпадает с числом строк в векторе-столбце.");
         }
-        Vector tempVector = new Vector(matrix.getColumnNumbers());
+        Vector tempVector = new Vector(matrix.getColumnsNumber());
 
-        for (int i = 0; i < matrix.getColumnNumbers(); i++) {
+        for (int i = 0; i < matrix.getColumnsNumber(); i++) {
             tempVector.setVectorComponent(i, Vector.vectorsScalarMultiplication(matrix.matrixElements[i], vector));
         }
         return tempVector;
