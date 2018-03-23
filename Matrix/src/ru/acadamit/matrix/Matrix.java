@@ -127,11 +127,7 @@ public class Matrix {
         double epsilon = 1E-5;
         int swapStringsCount = 0;
 
-        Matrix tempMatrix = new Matrix(rows.length, rows.length);
-
-        for (int i = 0; i < rows.length; i++) {
-            tempMatrix.rows[i] = new Vector(rows[i]);
-        }
+        Matrix tempMatrix = new Matrix(this.rows);
 
         for (int i = 0; i < tempMatrix.rows.length - 1; i++) {
             for (int j = i + 1; j < tempMatrix.rows.length; j++) {
@@ -161,7 +157,7 @@ public class Matrix {
             determinant *= tempMatrix.rows[i].getVectorComponent(i);
         }
 
-        return Math.abs((swapStringsCount % 2 == 0 ? 1 : -1) * determinant);
+        return (swapStringsCount % 2 == 0 ? 1 : -1) * determinant;
     }
 
     public void sum(Matrix matrix) {

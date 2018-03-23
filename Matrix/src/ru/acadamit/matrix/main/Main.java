@@ -17,11 +17,11 @@ public class Main {
                 new Vector(3)
         });
 
-        System.out.println("Матрица нулей размером " + matrix1.getRowNumbers() + "x" + matrix1.getColumnNumbers() + ": " + matrix1);
+        System.out.println("Матрица нулей размером " + matrix1.getRowsNumber() + "x" + matrix1.getColumnsNumber() + ": " + matrix1);
 
         System.out.println("Матрица из double массива: " + matrix2);
         System.out.println("Её копия: " + matrix3);
-        System.out.println("Её размер: " + matrix2.getRowNumbers() + "x" + matrix2.getColumnNumbers());
+        System.out.println("Её размер: " + matrix2.getRowsNumber() + "x" + matrix2.getColumnsNumber());
         System.out.println("Её второй вектор: " + matrix2.getRow(1));
 
         System.out.print("Смена этого вектора на {4,4,4}: ");
@@ -95,5 +95,13 @@ public class Main {
         );
         System.out.println("vector11: " + vector11);
         System.out.println("matrix9 * vector11: " + Matrix.matrixMultiplicationOnVector(matrix9, vector11));
+
+        Matrix matrix64 = new Matrix(new double[][]{
+                {3,3},
+                {3,1}
+
+        });
+
+        System.out.println(matrix64.determinant());
     }
 }
