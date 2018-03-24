@@ -20,7 +20,7 @@ public class Main {
             while (reader.hasNextLine()) {
                 writer.append("<tr>");
 
-              String[] strings = reader.nextLine().replace("<", "&lt").replace(">", "&gt").replace("&", "&amp").split(delimiter);
+                String[] strings = reader.nextLine().replace("&", "&amp").replace("<", "&lt").replace(">", "&gt").split(delimiter);
 
                 for (String string : strings) {
                     writer.append("<td><center>");
@@ -30,6 +30,7 @@ public class Main {
                 writer.append("<br></tr>");
             }
             writer.append("</table>");
+            System.out.print("Done.");
         }
     }
 }
