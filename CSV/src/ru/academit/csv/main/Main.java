@@ -12,10 +12,10 @@ public class Main {
 
         String inputPath = "CSV\\src\\table.csv";
         String outputPath = "CSV\\src\\table.html";
-        StringBuilder temp = new StringBuilder();
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder resultString = new StringBuilder();
         char delimiter = ';';
-        char lastSymbolInLine = ';';
+        boolean flag = true;
+        boolean flag1 = false;
 
         while (true) {
             try (Scanner reader = new Scanner(new FileInputStream(inputPath), "windows-1251");
@@ -31,47 +31,49 @@ public class Main {
                 writer.append("<table border=\"1\" width=\"100%\">\n");
 
                 while (reader.hasNextLine()) {
-                    String line = reader.nextLine();
-                    if (line.isEmpty()) {
-                        continue;
-                    }
-                    char[] charsFromLine = line.toCharArray();
-                    if (lastSymbolInLine == delimiter) {
+                    char[] lineArray = reader.nextLine().toCharArray();
+                    int lastIndexDelimiter = 0;
+
+                    if (!flag1) {
                         writer.append("<tr>\n");
                     }
-                    lastSymbolInLine = charsFromLine[charsFromLine.length - 1];
 
-                    for (int i = 0; i < charsFromLine.length; i++) {
-                        if (charsFromLine[i] == delimiter) {
-                            writer.append("<td><center>").append(temp).append(stringBuilder.toString()).append("</center></td>\n");
-                            stringBuilder.setLength(0);
-                        } else if (charsFromLine[i] == '<') {
-                            stringBuilder.append("&lt;");
-                        } else if (charsFromLine[i] == '>') {
-                            stringBuilder.append("&gt;");
-                        } else if (charsFromLine[i] == '&') {
-                            stringBuilder.append("&amp;");
-                        } else if (i == charsFromLine.length - 1) {
-                            stringBuilder.append(charsFromLine[i]);
-                            stringBuilder.append("<br>");
+                    for (int i = 0; i < lineArray.length; i++) {
+                        if (lineArray[i] == delimiter) {
+                            lastIndexDelimiter = i;
+                            if (flag1) {
+                                writer.append(resultString.toString()).append("</td>");
+                                resultString.setLength(0);
+                                flag1 = false;
+                            } else {
+                                writer.append("<td>").append(resultString.toString()).append("</td>");
+                                resultString.setLength(0);
+                            }
+                        } else if (i == lineArray.length - 1 & lineArray[lastIndexDelimiter + 1] != '"') {
+                            resultString.append(lineArray[i]);
+                            writer.append("<td>").append(resultString.toString()).append("</td>");
+                            resultString.setLength(0);
+                            writer.append("</tr>");
+                        } else if (i == lineArray.length - 1 & lineArray[lastIndexDelimiter + 1] == '"') {
+                            resultString.append("<td>").append(lineArray[i]).append("<br>");
+
                         } else {
-                            stringBuilder.append(charsFromLine[i]);
+                            resultString.append(lineArray[i]);
                         }
+                    }
+                    flag1 = lineArray[lastIndexDelimiter + 1] == '"';
+                    if (!flag1) {
+                        writer.append("\n</tr>\n");
                     }
                 }
 
-                if (lastSymbolInLine == delimiter) {
-                    writer.append("</tr>\n");
-                }
-
-                writer.append("</tr></table>\n</body>\n</html>");
+                writer.append("</table>\n</body>\n</html>");
                 System.out.print("Done.");
                 return;
             } catch (FileNotFoundException e) {
-                    System.out.println("Исходный фаил не найден. Укажите корректный путь к CSV таблице:");
-                    inputPath = new Scanner(System.in).nextLine();
-            }
-            catch (IllegalArgumentException e){
+                System.out.println("Исходный фаил не найден. Укажите корректный путь к CSV таблице:");
+                inputPath = new Scanner(System.in).nextLine();
+            } catch (IllegalArgumentException e) {
                 System.out.println("Исходный фаил пуст. Укажите корректный путь к CSV таблице:");
                 inputPath = new Scanner(System.in).nextLine();
             }
@@ -79,3 +81,30 @@ public class Main {
     }
 }
 
+//    String line = reader.nextLine();
+//                    if (line.isEmpty()) {
+//                            continue;
+//                            }
+//                            char[] charsFromLine = line.toCharArray();
+//                            if (lastSymbolInLine == delimiter) {
+//                            writer.append("<tr>\n");
+//                            }
+//                            lastSymbolInLine = charsFromLine[charsFromLine.length - 1];
+//
+//                            for (int i = 0; i < charsFromLine.length; i++) {
+//        if (charsFromLine[i] == delimiter) {
+//        writer.append("<td><center>").append(temp).append(stringBuilder.toString()).append("</center></td>\n");
+//        stringBuilder.setLength(0);
+//        } else if (charsFromLine[i] == '<') {
+//        stringBuilder.append("&lt;");
+//        } else if (charsFromLine[i] == '>') {
+//        stringBuilder.append("&gt;");
+//        } else if (charsFromLine[i] == '&') {
+//        stringBuilder.append("&amp;");
+//        } else if (i == charsFromLine.length - 1) {
+//        stringBuilder.append(charsFromLine[i]);
+//        stringBuilder.append("<br>");
+//        } else {
+//        stringBuilder.append(charsFromLine[i]);
+//        }
+//        }
