@@ -1,7 +1,8 @@
-document.addEventListener("DOMContentLoaded", calculate);
+document.addEventListener("DOMContentLoaded", start);
 
-function calculate() {
-    document.getElementById("calculate_button").onclick = function () {
+function start() {
+    document.getElementById("calculate_button").addEventListener("click", calculate);
+    function calculate() {
         var a = document.getElementById("first_argument").value;
         var b = document.getElementById("second_argument").value;
         var c = document.getElementById("third_argument").value;
@@ -9,8 +10,7 @@ function calculate() {
 
         if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(equal)) {
             alert("Данные введены некорректно");
-        }
-        else {
+        } else {
             var firstAnswer = document.getElementById("fist_answer");
             var secondAnswer = document.getElementById("second_answer");
 
